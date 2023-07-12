@@ -27,7 +27,7 @@ packages = [('abiword', '5.8M', 'base'), ('adie', '145k', 'base'),
     
 
     
-class MyEditReserv(wx.Frame):
+class MyEditReserv(wx.Frame): #변경페이지 클래스
 	def __init__(self,select_data):
 		super(MyEditReserv,self).__init__(None,title="변경페이지",size=(300,250),pos=(0,0))
 		print("myedit...", select_data)
@@ -41,7 +41,8 @@ class MyEditReserv(wx.Frame):
 		vbox = wx.BoxSizer(wx.VERTICAL)
 		midPan = wx.Panel(panel)
 		midPan.SetBackgroundColour('#ededed')
-		
+
+		# 버튼
 		label = wx.StaticText(midPan,label='변경/취소',pos=(50,10))
 		btn_UpdatePage = wx.Button(midPan,label='날짜/시간 변경',pos=(50,60))
 		btn_UpdatePage.id = 1
@@ -53,7 +54,8 @@ class MyEditReserv(wx.Frame):
 
 		vbox.Add(midPan, wx.ID_ANY, wx.EXPAND | wx.ALL, 30)
 		panel.SetSizer(vbox)
-        
+
+	# 버튼 클릭 동작들
 	def onClick(self,event):
 		print("event.GetEventObject().id:",event.GetEventObject().id)
 		
@@ -90,7 +92,7 @@ class MyEditReserv(wx.Frame):
 
 #=====================MyReservation======================
 
-class MyReservation(wx.Frame):
+class MyReservation(wx.Frame): #예약내역 클래스
 	def __init__(self,select_data):
 		super(MyReservation,self).__init__(None,title="예약내역",size=(500,400),pos=(0,0))
 		
@@ -100,7 +102,7 @@ class MyReservation(wx.Frame):
 	
 	def create_table(self, select_data):
 		###DB CREATE TABLE
-		conn = sqlite3.connect("py43SemiChargeStation.db")
+		conn = sqlite3.connect("py43SemiChargeStation.db") #예약내역 DB 불러오기
 		cursor = conn.cursor()
 		cursor.execute("CREATE TABLE IF NOT EXISTS mychargestation (name TEXT UNIQUE, reserv_date DATE, reserv_hour TEXT)")
 		
@@ -112,7 +114,7 @@ class MyReservation(wx.Frame):
 			conn.commit()
 	
 		
-	def initGUI(self):
+	def initGUI(self): #gui설정
 		
 		self.m_panel = wx.Panel(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL)
 		
@@ -143,7 +145,7 @@ class MyReservation(wx.Frame):
 			self.lstView.SetItem(index, 2, self.vos[i][2])
 		
     
-	def onSelected(self,event):
+	def onSelected(self,event): #항목 선택되면 예약변경페이지 이동
 		print("onSelected...",event.GetIndex(), self.vos[event.GetIndex()])
 		dialog = wx.MessageDialog(self,'예약변경페이지로 이동하시겠습니까?','OK',wx.YES_NO)
 		if dialog.ShowModal() == wx.ID_YES:
@@ -170,7 +172,7 @@ class MyReservation(wx.Frame):
 
 #======================Reservation Calendar=====================================
 
-class Reservation:
+class Reservation: # 날짜시간 예약/변경 페이지
 	def __init__(self, select_data):
 		print("select_data: ",select_data)
 		
@@ -266,7 +268,7 @@ class Reservation:
 
 
 
-class CSList:
+class CSList: #충전소 리스트
 	#https://www.sourcecodester.com/tutorials/python/11382/python-simple-table-search-filter.html
 	def __init__(self):
 		
@@ -284,9 +286,10 @@ class CSList:
 
 		#======METHODS======
 		#CSTable
-		def createCSTable():
+		def createCSTable(): 
 			
 			#https://shaula0.tistory.com/34
+			#웹크롤링
 			url = "http://apis.data.go.kr/B552584/EvCharger/getChargerInfo" 
 
 			api_key = "gesCHu5JHbrjYez9amNdrNyXID9dG0Kg2tAKtrlpTZdOLfEC4etkbtkUC9YR7561lp2dbowO4NLHHcHD97CFkQ=="
@@ -331,7 +334,7 @@ class CSList:
 			conn.close()
 		
 		
-		def Search():
+		def Search(): #검색
 			if SEARCH.get() != "":
 				tree.delete(*tree.get_children())
 				conn = sqlite3.connect("py43SemiChargeStation.db")
@@ -423,7 +426,7 @@ class CSList:
 #CSList()
 
 ########################################################################
-class MyReservGraph(wx.Frame):
+class MyReservGraph(wx.Frame): # 예약한 충전소 월별로 그래프 표현
         #----------------------------------------------------------------------
         def __init__(self):
                 super(MyReservGraph,self).__init__(None,title="예약내역 충전소",size=(500,400),pos=(100, 100))
@@ -481,7 +484,7 @@ class MyReservGraph(wx.Frame):
 
 
 
-class WxMenu:
+class WxMenu: #메뉴 gui 클래스
 
 	def __init__(self):
 		menu_bar = wx.MenuBar()
@@ -649,7 +652,7 @@ app.MainLoop()'''
 
 
 
-class LoginPage:
+class LoginPage: #로그인 창
 	url = "http://192.168.216.1:8090/semiproject/json_cslogin.do"
 	def __init__(self):
 		#1.껍데기
